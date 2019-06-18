@@ -13,6 +13,7 @@
 #define OFFSET_BYTES_PER_SEC    0x0b
 #define OFFSET_TYPE_OF_FAT      0x39
 #define OFFSET_ENTRY_ATTR       0x0b
+#define OFFSET_TYPE_FAT         0x0b
 #define ENTRY_SIZE              32
 #define INIT_YEAR               1980
 
@@ -37,7 +38,7 @@ bool fat_read_boot_info(uint8_t *filePath){
         fatBoot.numberOfRootEntries = buff[OFFSET_ROOT_ENTRIES];
         fatBoot.sectorPerCluster    = buff[OFFSET_SEC_PER_CLUS];
         fatBoot.rootLocation        = fatBoot.numberOfFat*fatBoot.sizeOfFat+1;
-        fatBoot.sectorSize          = buff[0x0c]<<8|buff[0x0b];
+        fatBoot.sectorSize          = buff[OFFSET_TYPE_FAT+1]<<8|buff[OFFSET_TYPE_FAT];
         fatBoot.numOfSecRoot        = (fatBoot.numberOfRootEntries*ENTRY_SIZE)/fatBoot.sectorSize;
         /* Number of sector in root directory */
         fatBoot.sectorBeforeData    = fatBoot.numOfSecRoot+fatBoot.rootLocation;
